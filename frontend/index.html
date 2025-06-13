@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Autocorrect Search</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f1f5f9;
+      color: #1f2937;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #2563eb;
+    }
+
+    input {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      margin-right: 10px;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 16px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1e40af;
+    }
+
+    .result-box {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 500px;
+    }
+
+    .result-box pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1>City Autocorrect Search</h1>
+  <div>
+    <input type="text" id="cityInput" placeholder="Enter city name..." />
+    <button onclick="searchCity()">Search</button>
+  </div>
+  <div id="result" class="result-box"></div>
+
+  <script>
+    async function searchCity() {
+      const city = document.getElementById("cityInput").value;
+
+      const response = await fetch("http://127.0.0.1:5000/correct-city", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ city }),
+      });
+
+      const resultBox = document.getElementById("result");
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.corrected_city) {
+          resultBox.innerHTML = `<strong>Did you mean:</strong> ${data.corrected_city}?<br><pre>${JSON.stringify(data.details, null, 2)}</pre>`;
+        }
+      } else {
+        resultBox.innerHTML = `<span style="color:red;">City not found</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+
