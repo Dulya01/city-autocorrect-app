@@ -32,5 +32,22 @@ city-autocorrect-app/
 │ └── index.html # Frontend web page
 ├── README.md # Project documentation
 
+---
+
+## Output
+
+Did you mean: Colombo?
+{
+  "formatted_address": "Colombo, Sri Lanka",
+  "geometry": {
+    "location": {
+      "lat": 6.9270786,
+      "lng": 79.861243
+    }
+  },
+  "name": "Colombo"
+}
+
+
 
 
